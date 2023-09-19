@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
-
 const saucectrl = require('../controllers/sauce');
 
 router.get('/', auth, saucectrl.getAllSauces);
@@ -18,3 +16,5 @@ router.post('/:id/like', auth, saucectrl.addlike);
 // les deux points indiquent à Express que c'est un paramètre de route dynamique
 
 module.exports = router;
+
+// Les routes suivent les middleware avant renvoient de la réponse à l'utilsateur

@@ -1,6 +1,16 @@
 const http = require('http');
-// Appelle toutes les requetes qui seront effectué sur le serveur
+// Appelle toutes les requetes qui seront effectuées sur le serveur
+
+const mongoose = require('mongoose');
+// Mongoose est un module qui facilite les interactions avec la base de données
+
 const app = require('./app');
+
+mongoose.connect(process.env.MONGO_ACCESS,
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 
 const normalizePort = val => {

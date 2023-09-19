@@ -19,6 +19,6 @@ const sauceSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model('Sauce', sauceSchema);
-// export du schémas de modèle avec comme argument le titre et le schéma de donnée
+// export du schémas de modèle avec comme arguments: le titre et le schéma de donnée
 
 

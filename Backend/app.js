@@ -1,7 +1,13 @@
 const express = require('express');
+
+const helmet = require('helmet');
+//Helmet permet d'installer des entêtes sécurisées pour l'application
+
+const rateLimit = require('express-rate-limit');
+//Rate-limiter est un module qui permet de controler le nombre de requète qu'un utilisateur fait sur le site
+
 const app = express();
-const mongoose = require('mongoose');
-// Mongoose est un package qui facilite les interactions avec la base de données
+
 const stuffRoutes = require('./routes/sauce')
 const userRoutes = require('./routes/user');
 const path = require('path');
@@ -10,12 +16,6 @@ require('dotenv').config()
 app.use(cors());
 // règlage Sécurité du CORS :  cross origin ressource sharing (voir plus bas)
 
-
-mongoose.connect(process.env.MONGO_ACCESS,
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use(express.json());
 // = BODY PARSER 
@@ -38,5 +38,18 @@ app.use('/api/auth', userRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 // url abrégée de l'endpoint de la route pour l'enregistrement des images
 
+
+
+//utiliser helmet comme middleware
+app.use(helmet());
+
+// Config rate limiter
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 heure
+  max: 100, // 100 requêtes maximum par heure
+  message: 'Trop de requêtes de votre adresse IP. Veuillez réessayer plus tard.'
+});
+
+app.use(limiter);
 
 module.exports = app;
